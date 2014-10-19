@@ -1,6 +1,6 @@
 " space.vim "{{{1
 
-" Last Update: Oct 19, Sun | 13:23:31 | 2014
+" Last Update: Oct 19, Sun | 20:31:28 | 2014
 
 " variables "{{{2
 
@@ -57,7 +57,7 @@ function space#DelLine(line) "{{{3
 
 	if search(s:Mark,'cw')
 		echo "ERROR: '" . s:Mark . "' found!"
-		return
+		return 1
 	endif
 
 	" additional lines
