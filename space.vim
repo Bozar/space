@@ -1,16 +1,25 @@
 " space.vim "{{{1
 
-" Last Update: Oct 17, Fri | 22:31:58 | 2014
+" Last Update: Oct 19, Sun | 13:23:31 | 2014
 
 " variables "{{{2
 
-if !exists('g:Loaded_Space')
-	let g:Loaded_Space = 0
-endif
-if g:Loaded_Space > 0
-	finish
-endif
-let g:Loaded_Space = 1
+function s:Var_DelSpace_CJK() "{{{3
+
+	let s:Pat_CJK_CJK = '[^\x00-\xff]'
+
+	let s:Pat_CJKPunc_Western = '～\|！\|'
+	let s:Pat_CJKPunc_Western .= '…\|—\|'
+	let s:Pat_CJKPunc_Western .= '（\|）\|'
+	let s:Pat_CJKPunc_Western .= '；\|：\|'
+	let s:Pat_CJKPunc_Western .= '“\|”\|'
+	let s:Pat_CJKPunc_Western .= '‘\|’\|'
+	let s:Pat_CJKPunc_Western .= '《\|》\|'
+	let s:Pat_CJKPunc_Western .= '，\|。\|'
+	let s:Pat_CJKPunc_Western .= '？\|、\|'
+	let s:Pat_CJKPunc_Western .= '·'
+
+endfunction "}}}3
 
 let s:Mark = '###LOOONG_PLACEHOLDER_FOR_SPACE###'
 
@@ -29,12 +38,18 @@ function space#DelSpace_Trail() "{{{3
 
 endfunction "}}}3
 
-function space#DelSpace_Inner() "{{{3
+function space#DelSpace_CJK() "{{{3
 
-	let l:pattern = '[^\x00-\xff]'
+	call <sid>Var_DelSpace_CJK()
 
-	execute '%s/\(' . l:pattern . '\) \+\(' .
-	\ l:pattern . '\)/\1\2/ge'
+	execute '%s/\(' . s:Pat_CJK_CJK . '\) \+\(' .
+	\ s:Pat_CJK_CJK . '\)/\1\2/ge'
+
+	execute '%s/\(\w\) \+\(' .
+	\ s:Pat_CJKPunc_Western . '\)/\1\2/ge'
+
+	execute '%s/\(' . s:Pat_CJKPunc_Western .
+	\ '\) \+\(\w\)/\1\2/ge'
 
 endfunction "}}}3
 
