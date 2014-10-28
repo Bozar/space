@@ -1,6 +1,6 @@
 " space.vim "{{{1
 
-" Last Update: Oct 19, Sun | 20:31:28 | 2014
+" Last Update: Oct 27, Mon | 21:15:10 | 2014
 
 " variables "{{{2
 
@@ -28,13 +28,16 @@ let s:Mark = '###LOOONG_PLACEHOLDER_FOR_SPACE###'
 
 function space#DelSpace_Trail() "{{{3
 
-	let l:pattern = '\s*　\+$'
+	let l:pure = '\s\+$'
+	let l:mixed = '\s*　\+$'
 
-	%s/\s*$//e
+	if search(l:pure,'cw')
+		execute '%s/' . l:pure . '//'
+	endif
 
-	while search(l:pattern,'cw')
-		execute '%s/' . l:pattern . '//'
-	endwhile
+	if search(l:mixed,'cw')
+		execute '%s/' . l:mixed . '//'
+	endif
 
 endfunction "}}}3
 
