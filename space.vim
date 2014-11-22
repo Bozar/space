@@ -1,23 +1,28 @@
 " space.vim "{{{1
 
-" Last Update: Oct 27, Mon | 21:15:10 | 2014
+" Last Update: Nov 22, Sat | 13:37:13 | 2014
 
 " variables "{{{2
 
-function s:Var_DelSpace_CJK() "{{{3
+function s:VarDelSpaceCJK() "{{{3
 
-	let s:Pat_CJK_CJK = '[^\x00-\xff]'
+    let s:PatCJKs = '[^\x00-\xff]'
 
-	let s:Pat_CJKPunc_Western = '～\|！\|'
-	let s:Pat_CJKPunc_Western .= '…\|—\|'
-	let s:Pat_CJKPunc_Western .= '（\|）\|'
-	let s:Pat_CJKPunc_Western .= '；\|：\|'
-	let s:Pat_CJKPunc_Western .= '“\|”\|'
-	let s:Pat_CJKPunc_Western .= '‘\|’\|'
-	let s:Pat_CJKPunc_Western .= '《\|》\|'
-	let s:Pat_CJKPunc_Western .= '，\|。\|'
-	let s:Pat_CJKPunc_Western .= '？\|、\|'
-	let s:Pat_CJKPunc_Western .= '·'
+    let s:PatCJKPuncWestern = '～\|！\|'
+
+    let s:PatCJKPuncWestern .= '…\|—\|'
+
+    let s:PatCJKPuncWestern .= '（\|）\|'
+    let s:PatCJKPuncWestern .= '《\|》\|'
+
+    let s:PatCJKPuncWestern .= '“\|”\|'
+    let s:PatCJKPuncWestern .= '‘\|’\|'
+
+    let s:PatCJKPuncWestern .= '；\|：\|'
+    let s:PatCJKPuncWestern .= '，\|。\|'
+    let s:PatCJKPuncWestern .= '？\|、\|'
+
+    let s:PatCJKPuncWestern .= '·'
 
 endfunction "}}}3
 
@@ -26,57 +31,71 @@ let s:Mark = '###LOOONG_PLACEHOLDER_FOR_SPACE###'
  "}}}2
 " functions "{{{2
 
-function space#DelSpace_Trail() "{{{3
+function space#DelSpaceTrail() "{{{3
 
-	let l:pure = '\s\+$'
-	let l:mixed = '\s*　\+$'
+    let l:pure = '\s\+$'
+    let l:mixed = '\s*　\+$'
 
-	if search(l:pure,'cw')
-		execute '%s/' . l:pure . '//'
-	endif
+    if search(l:pure,'cw')
 
-	if search(l:mixed,'cw')
-		execute '%s/' . l:mixed . '//'
-	endif
+        execute '%s/' . l:pure . '//'
+
+    endif
+
+    if search(l:mixed,'cw')
+
+        execute '%s/' . l:mixed . '//'
+
+    endif
 
 endfunction "}}}3
 
-function space#DelSpace_CJK() "{{{3
+function space#DelSpaceCJK() "{{{3
 
-	call <sid>Var_DelSpace_CJK()
+    call <sid>VarDelSpaceCJK()
 
-	execute '%s/\(' . s:Pat_CJK_CJK . '\) \+\(' .
-	\ s:Pat_CJK_CJK . '\)/\1\2/ge'
+    execute '%s/\(' . s:PatCJKs . '\) \+' .
+    \ '\(' . s:PatCJKs . '\)/\1\2/ge'
 
-	execute '%s/\(\w\) \+\(' .
-	\ s:Pat_CJKPunc_Western . '\)/\1\2/ge'
+    execute '%s/\(\w\) \+' .
+    \ '\(' . s:PatCJKPuncWestern . '\)/\1\2/ge'
 
-	execute '%s/\(' . s:Pat_CJKPunc_Western .
-	\ '\) \+\(\w\)/\1\2/ge'
+    execute '%s/\(' . s:PatCJKPuncWestern . '\)' .
+    \ '\+\(\w\)/\1\2/ge'
 
 endfunction "}}}3
 
 function space#DelLine(line) "{{{3
 
-	if search(s:Mark,'cw')
-		echo "ERROR: '" . s:Mark . "' found!"
-		return 1
-	endif
+    if search(s:Mark,'cw')
 
-	" additional lines
-	if a:line == 0 && search('^$','cw')
-		execute '1,$-1g/^$/+1s/^$/' . s:Mark .
-		\ '/e'
-		execute '$s/^$/' . s:Mark . '/e'
-		if search(s:Mark,'cw')
-			execute 'g/^'. s:Mark . '$/delete'
-		endif
+        echo 'ERROR:' . " '" . s:Mark . "' found!"
+        return 1
 
-	" empty lines
-	elseif a:line == 1 && search('^$','cw')
-		g/^$/delete
+    endif
 
-	endif
+    " additional lines
+
+    if a:line == 0 && search('^$','cw')
+
+        execute '1,$-1g/^$/+1s/^$/' . s:Mark .
+        \ '/e'
+
+        execute '$s/^$/' . s:Mark . '/e'
+
+        if search(s:Mark,'cw')
+
+            execute 'g/^'. s:Mark . '$/delete'
+
+        endif
+
+    " empty lines
+
+    elseif a:line == 1 && search('^$','cw')
+
+        g/^$/delete
+
+    endif
 
 endfunction "}}}3
 
