@@ -1,6 +1,6 @@
 " space.vim "{{{1
 
-" Last Update: Nov 22, Sat | 23:14:43 | 2014
+" Last Update: Nov 30, Sun | 11:48:17 | 2014
 
 " variables "{{{2
 
@@ -54,14 +54,35 @@ function space#DelSpaceCJK() "{{{3
 
     call <sid>VarDelSpaceCJK()
 
-    execute '%s/\(' . s:PatCJKs . '\) \+' .
-    \ '\(' . s:PatCJKs . '\)/\1\2/ge'
+    let l:cjk =
+    \ '\(' . s:PatCJKs . '\)' . ' \+' .
+    \ '\(' . s:PatCJKs . '\)'
 
-    execute '%s/\(\w\) \+' .
-    \ '\(' . s:PatCJKPuncWestern . '\)/\1\2/ge'
+    if search(l:cjk,'cw')
 
-    execute '%s/\(' . s:PatCJKPuncWestern . '\)' .
-    \ '\+\(\w\)/\1\2/ge'
+        execute '%s/' . l:cjk . '/\1\2/g'
+
+    endif
+
+    let l:puncAfter =
+    \ '\(\w\)' . ' \+' .
+    \ '\(' . s:PatCJKPuncWestern . '\)'
+
+    if search(l:puncAfter,'cw')
+
+        execute '%s/' . l:puncAfter . '/\1\2/g'
+
+    endif
+
+    let l:puncBefore =
+    \ '\(' . s:PatCJKPuncWestern . '\)' . ' \+' .
+    \ '\(\w\)'
+
+    if search(l:puncBefore,'cw')
+
+        execute '%s/' . l:puncBefore . '/\1\2/g'
+
+    endif
 
 endfunction "}}}3
 
