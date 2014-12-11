@@ -1,6 +1,6 @@
 " space.vim "{{{1
 
-" Last Update: Nov 30, Sun | 11:48:17 | 2014
+" Last Update: Dec 11, Thu | 11:39:37 | 2014
 
 " variables "{{{2
 
@@ -8,21 +8,21 @@ function s:VarDelSpaceCJK() "{{{3
 
     let s:PatCJKs = '[^\x00-\xff]'
 
-    let s:PatCJKPuncWestern = '～\|！\|'
+    let s:PatCJKPuncWordCha = '～\|！\|'
 
-    let s:PatCJKPuncWestern .= '…\|—\|'
+    let s:PatCJKPuncWordCha .= '…\|—\|'
 
-    let s:PatCJKPuncWestern .= '（\|）\|'
-    let s:PatCJKPuncWestern .= '《\|》\|'
+    let s:PatCJKPuncWordCha .= '（\|）\|'
+    let s:PatCJKPuncWordCha .= '《\|》\|'
 
-    let s:PatCJKPuncWestern .= '“\|”\|'
-    let s:PatCJKPuncWestern .= '‘\|’\|'
+    let s:PatCJKPuncWordCha .= '“\|”\|'
+    let s:PatCJKPuncWordCha .= '‘\|’\|'
 
-    let s:PatCJKPuncWestern .= '；\|：\|'
-    let s:PatCJKPuncWestern .= '，\|。\|'
-    let s:PatCJKPuncWestern .= '？\|、\|'
+    let s:PatCJKPuncWordCha .= '；\|：\|'
+    let s:PatCJKPuncWordCha .= '，\|。\|'
+    let s:PatCJKPuncWordCha .= '？\|、\|'
 
-    let s:PatCJKPuncWestern .= '·'
+    let s:PatCJKPuncWordCha .= '·'
 
 endfunction "}}}3
 
@@ -66,7 +66,7 @@ function space#DelSpaceCJK() "{{{3
 
     let l:puncAfter =
     \ '\(\w\)' . ' \+' .
-    \ '\(' . s:PatCJKPuncWestern . '\)'
+    \ '\(' . s:PatCJKPuncWordCha . '\)'
 
     if search(l:puncAfter,'cw')
 
@@ -75,7 +75,7 @@ function space#DelSpaceCJK() "{{{3
     endif
 
     let l:puncBefore =
-    \ '\(' . s:PatCJKPuncWestern . '\)' . ' \+' .
+    \ '\(' . s:PatCJKPuncWordCha . '\)' . ' \+' .
     \ '\(\w\)'
 
     if search(l:puncBefore,'cw')
